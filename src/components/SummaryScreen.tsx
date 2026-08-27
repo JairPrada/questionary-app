@@ -19,6 +19,7 @@ interface SummaryScreenProps {
   onToggleTheme: () => void;
   onRestart: () => void;
   onConfig: () => void;
+  onHome: () => void;
 }
 
 export function SummaryScreen({
@@ -28,6 +29,7 @@ export function SummaryScreen({
   onToggleTheme,
   onRestart,
   onConfig,
+  onHome,
 }: SummaryScreenProps) {
   const totalTime = usedTimes.reduce((acc, t) => acc + t, 0);
   const average =
@@ -114,11 +116,7 @@ export function SummaryScreen({
             </div>
           </CardContent>
           <CardFooter className="flex-col gap-3 sm:flex-row">
-            <Button
-              type="button"
-              className="flex-1"
-              onClick={onRestart}
-            >
+            <Button type="button" className="flex-1" onClick={onRestart}>
               Repetir entrevista
             </Button>
             <Button
@@ -128,6 +126,14 @@ export function SummaryScreen({
               onClick={onConfig}
             >
               Cambiar configuración
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              className="flex-1"
+              onClick={onHome}
+            >
+              Volver al inicio
             </Button>
           </CardFooter>
         </Card>

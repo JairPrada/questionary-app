@@ -6,14 +6,15 @@ import {
   persistSettings,
 } from './lib/interview';
 import { Theme, applyThemeClass, loadTheme, saveTheme } from './lib/theme';
+import { HomeScreen } from './components/HomeScreen';
 import { ConfigScreen } from './components/ConfigScreen';
 import { InterviewScreen } from './components/InterviewScreen';
 import { SummaryScreen } from './components/SummaryScreen';
 
-type Screen = 'config' | 'interview' | 'summary';
+type Screen = 'home' | 'config' | 'interview' | 'summary';
 
 function App() {
-  const [screen, setScreen] = useState<Screen>('config');
+  const [screen, setScreen] = useState<Screen>('home');
   const [settings, setSettings] = useState<InterviewSettings>(() => loadSettings());
   const [session, setSession] = useState<string[]>([]);
   const [usedTimes, setUsedTimes] = useState<number[]>([]);
@@ -56,6 +57,15 @@ function App() {
 
   return (
     <>
+      {screen === 'home' && (
+        <HomeScreen
+          settings={settings}
+          theme={theme}
+          onToggleTheme={handleToggleTheme}
+          onQuickStart={handleStart}
+          onNewSession={() => setScreen('config')}
+        />
+      )}
       {screen === 'config' && (
         <ConfigScreen
           settings={settings}
@@ -63,6 +73,7 @@ function App() {
           onToggleTheme={handleToggleTheme}
           onChange={handleChange}
           onStart={handleStart}
+          onBack={() => setScreen('home')}
         />
       )}
       {screen === 'interview' && (
@@ -72,7 +83,7 @@ function App() {
           theme={theme}
           onToggleTheme={handleToggleTheme}
           onFinish={handleFinish}
-          onExit={() => setScreen('config')}
+          onExit={() => setScreen('home')}
         />
       )}
       {screen === 'summary' && (
@@ -83,6 +94,7 @@ function App() {
           onToggleTheme={handleToggleTheme}
           onRestart={handleRestart}
           onConfig={() => setScreen('config')}
+          onHome={() => setScreen('home')}
         />
       )}
     </>

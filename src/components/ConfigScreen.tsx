@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { ArrowLeft } from 'lucide-react';
 import {
   Card,
   CardContent,
@@ -27,7 +28,10 @@ interface ConfigScreenProps {
   onToggleTheme: () => void;
   onChange: (next: InterviewSettings) => void;
   onStart: () => void;
+  onBack: () => void;
 }
+
+const fieldClass = 'mt-2';
 
 export function ConfigScreen({
   settings,
@@ -35,6 +39,7 @@ export function ConfigScreen({
   onToggleTheme,
   onChange,
   onStart,
+  onBack,
 }: ConfigScreenProps) {
   const [questionsText, setQuestionsText] = useState(() =>
     settings.questions.join('\n')
@@ -61,6 +66,12 @@ export function ConfigScreen({
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(16,185,129,0.07),transparent_55%)] dark:bg-[radial-gradient(ellipse_at_top,rgba(16,185,129,0.09),transparent_55%)]"
       />
 
+      <div className="absolute left-4 top-4 z-20 md:left-8 md:top-8">
+        <Button type="button" variant="ghost" size="sm" onClick={onBack}>
+          <ArrowLeft />
+          Volver
+        </Button>
+      </div>
       <div className="absolute right-4 top-4 z-20 md:right-8 md:top-8">
         <ThemeToggle theme={theme} onToggle={onToggleTheme} />
       </div>
@@ -68,7 +79,7 @@ export function ConfigScreen({
       <div className="relative z-10 flex w-full max-w-2xl flex-col items-center">
         <div className="flex flex-col items-center text-center">
           <span className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-            Práctica de entrevista
+            Nueva sesión
           </span>
           <h1 className="mt-3 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
             Configura tu entrevista
@@ -103,7 +114,7 @@ export function ConfigScreen({
               placeholder={
                 '¿Cuéntame sobre ti?\n¿Cuál es tu mayor fortaleza?\n¿Por qué quieres este rol?'
               }
-              className="mt-2 font-mono"
+              className={`${fieldClass} font-mono`}
             />
 
             <div className="mt-8 border-t pt-8">
@@ -117,71 +128,63 @@ export function ConfigScreen({
               <div className="mt-6 grid gap-6 sm:grid-cols-2">
                 <div>
                   <Label htmlFor="numQuestions">Número de preguntas</Label>
-                  <div className="relative mt-2">
-                    <Input
-                      id="numQuestions"
-                      type="number"
-                      min={1}
-                      max={Math.max(poolSize, 1)}
-                      value={settings.numQuestions}
-                      onChange={(e) =>
-                        onChange({
-                          ...settings,
-                          numQuestions: Math.max(1, Number(e.target.value) || 1),
-                        })
-                      }
-                      className="pr-20"
-                    />
-                    <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
-                      {settings.numQuestions === 1 ? 'pregunta' : 'preguntas'}
-                    </span>
-                  </div>
+                  <Input
+                    id="numQuestions"
+                    type="number"
+                    min={1}
+                    max={Math.max(poolSize, 1)}
+                    value={settings.numQuestions}
+                    onChange={(e) =>
+                      onChange({
+                        ...settings,
+                        numQuestions: Math.max(1, Number(e.target.value) || 1),
+                      })
+                    }
+                    className={fieldClass}
+                  />
                 </div>
 
                 <div>
                   <Label htmlFor="secondsPerQuestion">
-                    Duración por pregunta
+                    Duración por pregunta (segundos)
                   </Label>
-                  <div className="relative mt-2">
-                    <Input
-                      id="secondsPerQuestion"
-                      type="number"
-                      min={5}
-                      max={3600}
-                      step={5}
-                      value={settings.secondsPerQuestion}
-                      onChange={(e) =>
-                        onChange({
-                          ...settings,
-                          secondsPerQuestion: Math.max(
-                            5,
-                            Number(e.target.value) || 5
-                          ),
-                        })
-                      }
-                      className="pr-20"
-                    />
-                    <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
-                      segundos
-                    </span>
-                  </div>
+                  <Input
+                    id="secondsPerQuestion"
+                    type="number"
+                    min={5}
+                    max={3600}
+                    step={5}
+                    value={settings.secondsPerQuestion}
+                    onChange={(e) =>
+                      onChange({
+                        ...settings,
+                        secondsPerQuestion: Math.max(
+                          5,
+                          Number(e.target.value) || 5
+                        ),
+                      })
+                    }
+                    className={fieldClass}
+                  />
                 </div>
               </div>
 
-              <div className="mt-6 flex items-center justify-between gap-4">
-                <div>
-                  <Label htmlFor="shuffle">Barajar preguntas</Label>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    Mezcla el orden del banco antes de empezar cada sesión.
-                  </p>
+              <div className="mt-6">
+                <Label htmlFor="shuffle">Barajar preguntas</Label>
+                <div
+                  className={`${fieldClass} flex h-10 items-center justify-between rounded-md border border-input bg-transparent px-3 shadow-sm`}
+                >
+                  <span className="text-sm text-muted-foreground">
+                    Mezclar el orden en cada sesión
+                  </span>
+                  <Switch
+                    id="shuffle"
+                    checked={settings.shuffle}
+                    onCheckedChange={(checked) =>
+                      onChange({ ...settings, shuffle: checked })
+                    }
+                  />
                 </div>
-                <Switch
-                  id="shuffle"
-                  checked={settings.shuffle}
-                  onCheckedChange={(checked) =>
-                    onChange({ ...settings, shuffle: checked })
-                  }
-                />
               </div>
             </div>
 
@@ -215,7 +218,7 @@ export function ConfigScreen({
               </dl>
             </div>
           </CardContent>
-          <CardFooter className="flex-col items-stretch gap-2">
+          <CardFooter>
             <Button
               type="button"
               size="lg"

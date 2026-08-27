@@ -149,7 +149,21 @@ export function InterviewScreen({
           </span>{' '}
           <span className="text-muted-foreground/60">/ {questions.length}</span>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3 md:gap-4">
+          <div className="flex flex-col items-end gap-1">
+            <AnimatedDigits
+              value={formatTime(remaining)}
+              className={`text-2xl tracking-tight md:text-3xl ${timerColor} ${
+                alertPulse ? 'animate-pulse' : ''
+              }`}
+            />
+            <div className="h-1 w-24 overflow-hidden rounded-full bg-muted md:w-32">
+              <div
+                className={`h-full rounded-full transition-all duration-1000 ease-linear ${barColor}`}
+                style={{ width: `${pct * 100}%` }}
+              />
+            </div>
+          </div>
           <ThemeToggle theme={theme} onToggle={onToggleTheme} />
           <Button
             type="button"
@@ -163,25 +177,7 @@ export function InterviewScreen({
         </div>
       </header>
 
-      <main className="relative z-10 flex flex-1 flex-col items-center justify-center gap-10 px-24 pb-16 md:px-32">
-        <div className="flex flex-col items-center gap-2.5">
-          <AnimatedDigits
-            value={formatTime(remaining)}
-            className={`text-3xl tracking-tight md:text-4xl ${timerColor} ${
-              alertPulse ? 'animate-pulse' : ''
-            }`}
-          />
-          <div className="h-1.5 w-40 overflow-hidden rounded-full bg-muted md:w-56">
-            <div
-              className={`h-full rounded-full transition-all duration-1000 ease-linear ${barColor}`}
-              style={{ width: `${pct * 100}%` }}
-            />
-          </div>
-          <span className="text-[11px] uppercase tracking-widest text-muted-foreground">
-            Tiempo para responder
-          </span>
-        </div>
-
+      <main className="relative z-10 flex flex-1 flex-col items-center justify-center px-24 pb-16 md:px-32">
         <div
           className="w-full max-w-4xl text-center"
           style={{ perspective: '1000px' }}
