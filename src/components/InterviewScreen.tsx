@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
-import { BackgroundBeams } from './ui/background-beams';
+import { Check, ChevronLeft, ChevronRight } from 'lucide-react';
+import { AuroraBackground } from './ui/aurora-background';
 import { TypewriterEffect } from './ui/typewriter-effect';
+import { Button } from './ui/button';
 import { AnimatedDigits } from './AnimatedDigits';
 import { ThemeToggle } from './ThemeToggle';
 import { formatTime } from '../lib/interview';
@@ -58,9 +60,9 @@ function QuestionTimer({
 
 const slideVariants = {
   initial: {
-    scale: 0.92,
+    scale: 0.94,
     opacity: 0,
-    rotateX: 25,
+    rotateX: 20,
   },
   visible: {
     scale: 1,
@@ -73,7 +75,7 @@ const slideVariants = {
   },
   upExit: {
     opacity: 0,
-    y: '-40%',
+    y: '-30%',
     transition: {
       duration: 0.35,
     },
@@ -90,15 +92,7 @@ export function InterviewScreen({
 }: InterviewScreenProps) {
   const [index, setIndex] = useState(0);
   const [remaining, setRemaining] = useState(secondsPerQuestion);
-  const [elapsed, setElapsed] = useState(0);
   const usedTimesRef = useRef<number[]>([]);
-
-  useEffect(() => {
-    const id = setInterval(() => {
-      setElapsed((prev) => prev + 1);
-    }, 1000);
-    return () => clearInterval(id);
-  }, []);
 
   const advance = (manual: boolean) => {
     const used = manual
@@ -121,6 +115,7 @@ export function InterviewScreen({
 
   const question = questions[index];
   const words = question.split(' ').map((text) => ({ text }));
+  const isLast = index === questions.length - 1;
 
   const pct = remaining / secondsPerQuestion;
   const timerColor =
@@ -138,9 +133,7 @@ export function InterviewScreen({
   const alertPulse = pct <= 0.15;
 
   return (
-    <div className="relative flex min-h-screen w-full flex-col overflow-hidden bg-neutral-50 dark:bg-neutral-950">
-      <BackgroundBeams className="opacity-25 dark:opacity-60" />
-
+    <AuroraBackground className="bg-background text-foreground">
       <QuestionTimer
         key={index}
         seconds={secondsPerQuestion}
@@ -149,54 +142,48 @@ export function InterviewScreen({
       />
 
       <header className="relative z-10 flex w-full items-center justify-between px-6 py-5 md:px-10">
-        <div className="text-sm font-medium text-neutral-500 dark:text-neutral-400">
+        <div className="text-sm font-medium text-muted-foreground">
           Pregunta{' '}
-          <span className="text-lg font-bold text-neutral-900 dark:text-white">
+          <span className="text-lg font-bold text-foreground">
             {index + 1}
           </span>{' '}
-          <span className="text-neutral-400 dark:text-neutral-600">
-            / {questions.length}
-          </span>
+          <span className="text-muted-foreground/60">/ {questions.length}</span>
         </div>
-        <div className="flex items-center gap-3">
-          <div className="hidden text-sm text-neutral-500 dark:text-neutral-500 sm:block">
-            Tiempo total:{' '}
-            <span className="font-semibold text-neutral-700 dark:text-neutral-300">
-              {formatTime(elapsed)}
-            </span>
-          </div>
+        <div className="flex items-center gap-2">
           <ThemeToggle theme={theme} onToggle={onToggleTheme} />
-          <button
+          <Button
             type="button"
+            variant="outline"
+            size="sm"
             onClick={onExit}
-            className="rounded-lg border border-neutral-300 px-3 py-1.5 text-xs text-neutral-500 transition-colors hover:border-red-400 hover:text-red-600 dark:border-neutral-800 dark:text-neutral-400 dark:hover:border-red-800 dark:hover:text-red-400"
+            className="text-muted-foreground hover:text-destructive"
           >
             Salir
-          </button>
+          </Button>
         </div>
       </header>
 
-      <main className="relative z-10 flex flex-1 flex-col items-center justify-center gap-10 px-6 pb-24">
-        <div className="flex flex-col items-center gap-3">
+      <main className="relative z-10 flex flex-1 flex-col items-center justify-center gap-10 px-24 pb-16 md:px-32">
+        <div className="flex flex-col items-center gap-2.5">
           <AnimatedDigits
             value={formatTime(remaining)}
-            className={`text-7xl tracking-tight md:text-8xl ${timerColor} ${
+            className={`text-3xl tracking-tight md:text-4xl ${timerColor} ${
               alertPulse ? 'animate-pulse' : ''
             }`}
           />
-          <div className="h-2 w-72 overflow-hidden rounded-full bg-neutral-200 dark:bg-neutral-800 md:w-96">
+          <div className="h-1.5 w-40 overflow-hidden rounded-full bg-muted md:w-56">
             <div
               className={`h-full rounded-full transition-all duration-1000 ease-linear ${barColor}`}
               style={{ width: `${pct * 100}%` }}
             />
           </div>
-          <span className="text-xs uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
+          <span className="text-[11px] uppercase tracking-widest text-muted-foreground">
             Tiempo para responder
           </span>
         </div>
 
         <div
-          className="w-full max-w-3xl"
+          className="w-full max-w-4xl text-center"
           style={{ perspective: '1000px' }}
         >
           <AnimatePresence mode="popLayout">
@@ -206,35 +193,45 @@ export function InterviewScreen({
               animate="visible"
               exit="upExit"
               variants={slideVariants}
-              className="rounded-3xl border border-neutral-200 bg-white/85 px-6 py-10 shadow-sm dark:border-neutral-800 dark:bg-neutral-900/70 dark:shadow-none md:px-12"
+              className="px-4 py-6"
             >
               <TypewriterEffect
                 words={words}
-                className="text-xl font-bold md:text-3xl"
+                className="text-2xl font-bold sm:text-4xl md:text-5xl"
                 cursorClassName="bg-emerald-500"
               />
             </motion.div>
           </AnimatePresence>
         </div>
-
-        <div className="flex items-center gap-4">
-          <button
-            type="button"
-            onClick={goBack}
-            disabled={index === 0}
-            className="rounded-xl border border-neutral-300 px-6 py-3 text-sm font-semibold text-neutral-600 transition-colors hover:border-neutral-500 hover:text-neutral-900 disabled:cursor-not-allowed disabled:opacity-30 dark:border-neutral-700 dark:text-neutral-300 dark:hover:border-neutral-500 dark:hover:text-white"
-          >
-            ← Anterior
-          </button>
-          <button
-            type="button"
-            onClick={() => advance(true)}
-            className="rounded-xl bg-gradient-to-r from-emerald-600 to-green-500 px-8 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:from-emerald-500 hover:to-green-400"
-          >
-            {index === questions.length - 1 ? 'Finalizar' : 'Siguiente →'}
-          </button>
-        </div>
       </main>
-    </div>
+
+      <div className="absolute inset-y-0 left-0 z-10 flex items-center px-3 md:px-8">
+        <Button
+          type="button"
+          variant="outline"
+          size="icon"
+          onClick={goBack}
+          disabled={index === 0}
+          aria-label="Pregunta anterior"
+          title="Pregunta anterior"
+          className="h-14 w-14 rounded-full shadow-sm [&_svg]:size-6 md:h-16 md:w-16"
+        >
+          <ChevronLeft />
+        </Button>
+      </div>
+
+      <div className="absolute inset-y-0 right-0 z-10 flex items-center px-3 md:px-8">
+        <Button
+          type="button"
+          size="icon"
+          onClick={() => advance(true)}
+          aria-label={isLast ? 'Finalizar entrevista' : 'Siguiente pregunta'}
+          title={isLast ? 'Finalizar entrevista' : 'Siguiente pregunta'}
+          className="h-14 w-14 rounded-full shadow-sm [&_svg]:size-6 md:h-16 md:w-16"
+        >
+          {isLast ? <Check /> : <ChevronRight />}
+        </Button>
+      </div>
+    </AuroraBackground>
   );
 }

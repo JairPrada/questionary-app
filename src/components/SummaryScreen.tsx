@@ -1,3 +1,13 @@
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from './ui/card';
+import { Button } from './ui/button';
+import { Badge } from './ui/badge';
 import { ThemeToggle } from './ThemeToggle';
 import { formatTime } from '../lib/interview';
 import { Theme } from '../lib/theme';
@@ -24,7 +34,7 @@ export function SummaryScreen({
     usedTimes.length > 0 ? Math.round(totalTime / usedTimes.length) : 0;
 
   return (
-    <div className="relative flex min-h-screen w-full flex-col items-center overflow-hidden bg-neutral-50 px-6 py-16 dark:bg-neutral-950">
+    <div className="relative flex min-h-screen w-full flex-col items-center overflow-hidden bg-background px-6 py-16">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(16,185,129,0.07),transparent_55%)] dark:bg-[radial-gradient(ellipse_at_top,rgba(16,185,129,0.09),transparent_55%)]"
@@ -34,83 +44,93 @@ export function SummaryScreen({
         <ThemeToggle theme={theme} onToggle={onToggleTheme} />
       </div>
 
-      <div className="relative z-10 w-full max-w-2xl rounded-3xl border border-neutral-200 bg-white/80 p-8 shadow-sm dark:border-neutral-800 dark:bg-neutral-900/60 dark:shadow-none md:p-10">
+      <div className="relative z-10 flex w-full max-w-2xl flex-col items-center">
         <div className="flex flex-col items-center text-center">
-          <span className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-600 dark:text-emerald-400">
+          <span className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
             Sesión finalizada
           </span>
-          <h1 className="mt-3 text-3xl font-bold tracking-tight text-neutral-900 dark:text-white md:text-4xl">
+          <h1 className="mt-3 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
             ¡Entrevista completada!
           </h1>
-          <p className="mt-3 max-w-md text-sm leading-6 text-neutral-500 dark:text-neutral-400">
+          <p className="mt-3 max-w-md text-sm leading-6 text-muted-foreground">
             Este es el resumen de tu sesión de práctica.
           </p>
         </div>
 
-        <div className="mt-8 grid grid-cols-3 gap-4">
-          <div className="rounded-2xl border border-neutral-200 bg-neutral-100/70 p-4 text-center dark:border-neutral-800 dark:bg-neutral-950/60">
-            <div className="text-2xl font-bold text-neutral-900 dark:text-white md:text-3xl">
-              {questions.length}
-            </div>
-            <div className="mt-1 text-xs uppercase tracking-wider text-neutral-500">
-              Preguntas
-            </div>
-          </div>
-          <div className="rounded-2xl border border-neutral-200 bg-neutral-100/70 p-4 text-center dark:border-neutral-800 dark:bg-neutral-950/60">
-            <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400 md:text-3xl">
-              {formatTime(totalTime)}
-            </div>
-            <div className="mt-1 text-xs uppercase tracking-wider text-neutral-500">
-              Tiempo total
-            </div>
-          </div>
-          <div className="rounded-2xl border border-neutral-200 bg-neutral-100/70 p-4 text-center dark:border-neutral-800 dark:bg-neutral-950/60">
-            <div className="text-2xl font-bold text-green-600 dark:text-green-400 md:text-3xl">
-              {formatTime(average)}
-            </div>
-            <div className="mt-1 text-xs uppercase tracking-wider text-neutral-500">
-              Promedio
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-8 max-h-72 space-y-2 overflow-y-auto pr-1">
-          {questions.map((question, i) => (
-            <div
-              key={`${question}-${i}`}
-              className="flex items-start justify-between gap-4 rounded-xl border border-neutral-200 bg-neutral-100/60 px-4 py-3 dark:border-neutral-800/70 dark:bg-neutral-950/40"
-            >
-              <div className="flex items-start gap-3">
-                <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-600/10 text-xs font-bold text-emerald-700 dark:bg-emerald-400/10 dark:text-emerald-400">
-                  {i + 1}
-                </span>
-                <p className="text-sm leading-6 text-neutral-700 dark:text-neutral-200">
-                  {question}
-                </p>
+        <Card className="mt-10 w-full">
+          <CardHeader>
+            <CardTitle>Resumen de la sesión</CardTitle>
+            <CardDescription>
+              Tiempos dedicados a cada pregunta.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-3 gap-4">
+              <div className="rounded-xl border bg-muted/40 p-4 text-center">
+                <div className="text-2xl font-bold text-foreground md:text-3xl">
+                  {questions.length}
+                </div>
+                <div className="mt-1 text-xs uppercase tracking-wider text-muted-foreground">
+                  Preguntas
+                </div>
               </div>
-              <span className="shrink-0 rounded-md bg-neutral-200 px-2 py-1 font-mono text-xs text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300">
-                {formatTime(usedTimes[i] ?? 0)}
-              </span>
+              <div className="rounded-xl border bg-muted/40 p-4 text-center">
+                <div className="text-2xl font-bold text-primary md:text-3xl">
+                  {formatTime(totalTime)}
+                </div>
+                <div className="mt-1 text-xs uppercase tracking-wider text-muted-foreground">
+                  Tiempo total
+                </div>
+              </div>
+              <div className="rounded-xl border bg-muted/40 p-4 text-center">
+                <div className="text-2xl font-bold text-emerald-500 md:text-3xl">
+                  {formatTime(average)}
+                </div>
+                <div className="mt-1 text-xs uppercase tracking-wider text-muted-foreground">
+                  Promedio
+                </div>
+              </div>
             </div>
-          ))}
-        </div>
 
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-          <button
-            type="button"
-            onClick={onRestart}
-            className="flex-1 rounded-xl bg-gradient-to-r from-emerald-600 to-green-500 px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition-colors hover:from-emerald-500 hover:to-green-400"
-          >
-            Repetir entrevista
-          </button>
-          <button
-            type="button"
-            onClick={onConfig}
-            className="flex-1 rounded-xl border border-neutral-300 px-6 py-3.5 text-sm font-semibold text-neutral-600 transition-colors hover:border-neutral-500 hover:text-neutral-900 dark:border-neutral-700 dark:text-neutral-300 dark:hover:border-neutral-500 dark:hover:text-white"
-          >
-            Cambiar configuración
-          </button>
-        </div>
+            <div className="mt-6 max-h-72 space-y-2 overflow-y-auto pr-1">
+              {questions.map((question, i) => (
+                <div
+                  key={`${question}-${i}`}
+                  className="flex items-start justify-between gap-4 rounded-xl border bg-muted/30 px-4 py-3"
+                >
+                  <div className="flex items-start gap-3">
+                    <Badge variant="outline" className="mt-0.5 h-6 w-6 shrink-0 justify-center rounded-full p-0 text-xs">
+                      {i + 1}
+                    </Badge>
+                    <p className="text-sm leading-6 text-foreground">
+                      {question}
+                    </p>
+                  </div>
+                  <span className="shrink-0 rounded-md bg-muted px-2 py-1 font-mono text-xs text-muted-foreground">
+                    {formatTime(usedTimes[i] ?? 0)}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+          <CardFooter className="flex-col gap-3 sm:flex-row">
+            <Button
+              type="button"
+              className="flex-1"
+              onClick={onRestart}
+            >
+              Repetir entrevista
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              className="flex-1"
+              onClick={onConfig}
+            >
+              Cambiar configuración
+            </Button>
+          </CardFooter>
+        </Card>
       </div>
     </div>
   );
