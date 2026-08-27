@@ -36,13 +36,14 @@ export const TypewriterEffect = ({
           width: "fit-content",
         },
         {
-          duration: 0.25,
-          delay: stagger(0.03),
+          duration: 0.3,
+          delay: stagger(0.1),
           ease: "easeInOut",
         }
       );
     }
-  }, [isInView, animate]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isInView]);
 
   const renderWords = () => {
     return (
@@ -55,7 +56,7 @@ export const TypewriterEffect = ({
                   initial={{}}
                   key={`char-${index}`}
                   className={cn(
-                    `dark:text-white text-black opacity-0 hidden`,
+                    `text-slate-200 opacity-0 hidden`,
                     word.className
                   )}
                 >
@@ -90,7 +91,7 @@ export const TypewriterEffect = ({
           repeatType: "reverse",
         }}
         className={cn(
-          "inline-block rounded-sm w-[4px] h-4 md:h-6 lg:h-10 bg-blue-500",
+          "inline-block rounded-sm w-[4px] h-4 md:h-6 lg:h-10 bg-cyan-400",
           cursorClassName
         )}
       ></motion.span>
@@ -126,7 +127,7 @@ export const TypewriterEffectSmooth = ({
               {word.text.map((char, index) => (
                 <span
                   key={`char-${index}`}
-                  className={cn(`dark:text-white text-black `, word.className)}
+                   className={cn(`text-slate-200 `, word.className)}
                 >
                   {char}
                 </span>
@@ -178,7 +179,7 @@ export const TypewriterEffectSmooth = ({
           repeatType: "reverse",
         }}
         className={cn(
-          "block rounded-sm w-[4px]  h-4 sm:h-6 xl:h-12 bg-blue-500",
+          "block rounded-sm w-[4px]  h-4 sm:h-6 xl:h-12 bg-cyan-400",
           cursorClassName
         )}
       ></motion.span>

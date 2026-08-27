@@ -1,36 +1,33 @@
-'use client';
-import { HTMLAttributes } from 'react';
-import { cn } from '@/lib/utils';
+"use client";
+import type { ReactNode } from "react";
+import { cn } from "@/lib/utils";
 
-export const AuroraBackground = ({
+export function AuroraBackground({
   className,
   children,
-  showRadialGradient = true,
-  ...props
-}: HTMLAttributes<HTMLDivElement> & { showRadialGradient?: boolean }) => {
+  showRadialGradient = false,
+}: {
+  className?: string;
+  children?: ReactNode;
+  showRadialGradient?: boolean;
+}) {
   return (
     <div
       className={cn(
-        'relative flex min-h-screen w-full flex-col overflow-hidden',
-        className
+        "absolute inset-0 -z-10 overflow-hidden bg-[#0B0F19]",
+        className,
       )}
-      {...props}
     >
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden">
         <div
           className={cn(
-            'animate-aurora absolute -inset-[10px] opacity-60 blur-[10px] will-change-transform',
-            `[--aurora-light:repeating-linear-gradient(100deg,var(--aurora-stripe)_0%,var(--aurora-stripe)_7%,transparent_10%,transparent_12%,var(--aurora-stripe)_16%)]`,
-            `[--aurora-glow:repeating-linear-gradient(100deg,var(--aurora-c1)_10%,var(--aurora-c2)_15%,var(--aurora-c3)_20%,var(--aurora-c4)_25%,var(--aurora-c5)_30%)]`,
-            '[background-image:var(--aurora-light),var(--aurora-glow)]',
-            '[background-size:300%,200%]',
-            '[background-position:50%_50%,50%_50%]',
+            "absolute inset-0 [--aurora:repeating-linear-gradient(100deg,#22d3ee_10%,#818cf8_20%,#a78bfa_30%,#34d399_40%,#22d3ee_50%)] [background-image:var(--aurora)] [background-size:300%,200%] [background-position:50%_50%] blur-[14px] opacity-50 after:absolute after:inset-0 after:content-[''] after:[background-image:var(--aurora)] after:[background-size:200%,100%] after:[background-position:50%_50%] after:opacity-60 after:animate-aurora",
             showRadialGradient &&
-              '[mask-image:radial-gradient(ellipse_at_50%_0%,black_30%,transparent_78%)]'
+              "[mask-image:radial-gradient(ellipse_at_100%_0%,black_10%,transparent_70%)]",
           )}
         />
       </div>
-      {children}
+      {children ? <div className="relative z-10">{children}</div> : null}
     </div>
   );
-};
+}
