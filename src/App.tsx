@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 const INITIAL_COUNT = 60;
 const QUESTIONS = [
