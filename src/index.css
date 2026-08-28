@@ -54,6 +54,31 @@
   --app-fg: #e2e8f0;
 }
 
+/* Landing de solo tema claro: fuerza las variables de color a sus
+   valores claros dentro del subárbol de la landing, sin importar
+   si el <html> tiene la clase "dark". */
+.landing-light {
+  --background: 210 40% 98%;
+  --foreground: 222 47% 11%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 11%;
+  --primary: 187 85% 53%;
+  --primary-foreground: 222 47% 11%;
+  --secondary: 210 40% 96%;
+  --secondary-foreground: 222 47% 11%;
+  --muted: 210 40% 96%;
+  --muted-foreground: 215 16% 47%;
+  --accent: 210 40% 96%;
+  --accent-foreground: 222 47% 11%;
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 214 32% 91%;
+  --input: 214 32% 91%;
+  --ring: 187 85% 53%;
+}
+
 @theme inline {
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
@@ -83,6 +108,11 @@
   --font-heading: "Inter", system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
@@ -108,4 +138,216 @@ body {
 
 @utility animate-aurora {
   animation: aurora 60s linear infinite;
+}
+
+/* Fondo claro y animado para la pantalla de práctica en vivo. */
+.live-bg {
+  background-color: hsl(210 40% 98%);
+  background-image:
+    radial-gradient(40rem 40rem at 15% 20%, hsl(187 85% 90% / 0.55), transparent 60%),
+    radial-gradient(45rem 45rem at 85% 15%, hsl(199 89% 92% / 0.5), transparent 60%),
+    radial-gradient(50rem 50rem at 75% 85%, hsl(187 70% 88% / 0.45), transparent 60%),
+    radial-gradient(40rem 40rem at 20% 80%, hsl(210 60% 90% / 0.5), transparent 60%);
+  background-size: 200% 200%;
+  animation: live-drift 22s ease-in-out infinite;
+}
+
+@keyframes live-drift {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+
+
+/* Temas de sesion: color de letras para contraste */
+.theme-light {
+  --background: 210 40% 98%;
+  --foreground: 222 47% 11%;
+  --muted-foreground: 215 16% 35%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+  --border: 214 32% 88%;
+  --input: 214 32% 88%;
+  --primary-foreground: 222 47% 11%;
+}
+
+.theme-dark {
+  --background: 222 47% 11%;
+  --foreground: 210 40% 98%;
+  --muted-foreground: 215 20% 70%;
+  --card: 222 47% 16%;
+  --card-foreground: 210 40% 98%;
+  --border: 217 33% 30%;
+  --input: 217 33% 30%;
+  --primary-foreground: 222 47% 11%;
+}
+
+/* Pista de progreso: en temas oscuros usa un track claro y sutil que
+   encaja con el fondo en lugar del --muted claro por defecto. */
+.theme-dark [data-slot="progress-track"] {
+  background-color: rgba(255, 255, 255, 0.18);
+}
+
+
+
+/* Aurora Background (aceternity-style) */
+.aurora-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.aurora-light {
+  background: #f0f9ff;
+}
+.aurora-dark {
+  background: #020617;
+}
+.aurora-blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(70px);
+  opacity: 0.7;
+  will-change: transform;
+}
+.aurora-blob-1 {
+  width: 55vw;
+  height: 55vw;
+  top: -10%;
+  left: -10%;
+  animation: auroraFloat1 22s ease-in-out infinite;
+}
+.aurora-blob-2 {
+  width: 50vw;
+  height: 50vw;
+  top: 8%;
+  right: -15%;
+  animation: auroraFloat2 27s ease-in-out infinite;
+}
+.aurora-blob-3 {
+  width: 45vw;
+  height: 45vw;
+  bottom: -15%;
+  left: 18%;
+  animation: auroraFloat3 31s ease-in-out infinite;
+}
+.aurora-light .aurora-blob-1 {
+  background: radial-gradient(circle, #67e8f9, transparent 70%);
+}
+.aurora-light .aurora-blob-2 {
+  background: radial-gradient(circle, #a5b4fc, transparent 70%);
+}
+.aurora-light .aurora-blob-3 {
+  background: radial-gradient(circle, #c4b5fd, transparent 70%);
+}
+.aurora-dark .aurora-blob-1 {
+  background: radial-gradient(circle, #22d3ee, transparent 70%);
+  opacity: 0.55;
+}
+.aurora-dark .aurora-blob-2 {
+  background: radial-gradient(circle, #818cf8, transparent 70%);
+  opacity: 0.5;
+}
+.aurora-dark .aurora-blob-3 {
+  background: radial-gradient(circle, #c084fc, transparent 70%);
+  opacity: 0.5;
+}
+@keyframes auroraFloat1 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(12%, 16%) scale(1.15);
+  }
+}
+@keyframes auroraFloat2 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-14%, 12%) scale(1.2);
+  }
+}
+@keyframes auroraFloat3 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(10%, -14%) scale(1.1);
+  }
+}
+
+/* Background Beams With Collision (aceternity-style) */
+.beams-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 50%, #1e1b4b, #020617 70%);
+}
+.beams-rotor {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  animation: beamsSpin 60s linear infinite;
+}
+.beam {
+  position: absolute;
+  left: -1px;
+  top: 0;
+  width: 2px;
+  height: 72vmax;
+  transform-origin: top center;
+  background: linear-gradient(to bottom, rgba(165, 180, 252, 0.55), transparent 70%);
+  opacity: 0.45;
+}
+.beams-core {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 36vmin;
+  height: 36vmin;
+  transform: translate(-50%, -50%);
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle,
+    rgba(129, 140, 248, 0.55),
+    rgba(34, 211, 238, 0.15) 40%,
+    transparent 70%
+  );
+  animation: beamsPulse 4.5s ease-in-out infinite;
+}
+@keyframes beamsSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes beamsPulse {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: translate(-50%, -50%) scale(1.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora-blob,
+  .beams-rotor,
+  .beams-core {
+    animation: none !important;
+  }
 }

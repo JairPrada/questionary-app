@@ -32,9 +32,6 @@ export function Navbar() {
           Questionary
         </Link>
         <nav className="hidden items-center gap-5 text-sm sm:flex">
-          <Link to="/demo" className={linkClass("/demo")}>
-            Demo
-          </Link>
           <Link to="/dashboard" className={linkClass("/dashboard")}>
             Panel
           </Link>

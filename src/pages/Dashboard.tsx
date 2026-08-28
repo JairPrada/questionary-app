@@ -134,9 +134,9 @@ export function Dashboard() {
       href: "/dashboard",
     },
     {
-      title: "Nueva simulación",
+      title: "Practicar en vivo",
       icon: <PlusCircle className="size-5" />,
-      href: "/demo",
+      href: "/live",
     },
     {
       title: "Bancos",
@@ -161,7 +161,7 @@ export function Dashboard() {
             Gestiona tus simulaciones de entrevista.
           </p>
         </div>
-        <Button variant="outline" onClick={logout}>
+        <Button variant="secondary" onClick={logout}>
           Cerrar sesión
         </Button>
       </div>
@@ -176,7 +176,7 @@ export function Dashboard() {
             </h2>
             <Button
               size="sm"
-              variant="outline"
+              variant="secondary"
               className="gap-1"
               onClick={() => setDesignEditor({ open: true })}
             >
@@ -217,7 +217,7 @@ export function Dashboard() {
                   </span>
                   {d.isBuiltIn ? (
                     <Badge
-                      variant="outline"
+                      variant="secondary"
                       className="shrink-0 text-[10px] text-slate-400"
                     >
                       Base
@@ -376,7 +376,7 @@ export function Dashboard() {
           </h2>
           <Button
             size="sm"
-            variant="outline"
+            variant="secondary"
             className="gap-1"
             onClick={() => setBankDialog({ open: true })}
           >
@@ -436,7 +436,7 @@ export function Dashboard() {
                         </CardDescription>
                       </div>
                       <Badge
-                        variant="outline"
+                        variant="secondary"
                         className="w-fit border-slate-700 text-slate-400"
                       >
                         {b.is_public ? "Público" : "Privado"}

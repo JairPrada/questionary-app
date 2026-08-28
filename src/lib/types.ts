@@ -9,6 +9,7 @@ export type QuestionBank = {
   user_id: string;
   title: string;
   is_public: boolean;
+  kind: "qa" | "vocabulario";
   icon?: string;
   created_at: string;
 };
@@ -18,6 +19,7 @@ export type Question = {
   bank_id: string;
   text: string;
   order_index: number;
+  answer?: string;
 };
 
 export type UseCaseCategory = "idiomas" | "entrevistas" | "negocios" | "ocio";
@@ -73,6 +75,7 @@ export type Session = {
   count: number;
   isRandom: boolean;
   is_public: boolean;
+  kind?: "qa" | "vocabulario";
   category?: UseCaseCategory;
   created_at: string;
 };
@@ -85,6 +88,7 @@ export type InterviewPreset = {
   questions_count: number;
   time_per_question_sec: number;
   is_random: boolean;
+  kind?: "qa" | "vocabulario";
   category?: UseCaseCategory;
   prep_sec?: number;
   created_at: string;

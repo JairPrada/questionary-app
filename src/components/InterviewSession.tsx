@@ -263,7 +263,7 @@ export function InterviewSession({
       {started && (
         <footer className="flex items-center justify-center gap-3 px-6 py-6">
           <Button
-            variant="outline"
+            variant="secondary"
             onClick={() => setPaused((p) => !p)}
             className="gap-2"
           >

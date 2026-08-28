@@ -61,6 +61,7 @@ const EXAMPLE_USER = "examples";
 
 type ExampleDef = {
   category: "idiomas" | "entrevistas" | "negocios" | "ocio";
+  kind?: "qa" | "vocabulario";
   bankId: string;
   bankTitle: string;
   bankIcon: string;
@@ -69,6 +70,7 @@ type ExampleDef = {
   prepSec: number;
   responseSec: number;
   questions: string[];
+  answers?: string[];
 };
 
 const EXAMPLES: ExampleDef[] = [
@@ -140,6 +142,37 @@ const EXAMPLES: ExampleDef[] = [
       "Sigue: 'La radio emitía una canción que nadie reconocía, y entonces...'",
     ],
   },
+  {
+    category: "idiomas",
+    kind: "vocabulario",
+    bankId: "example-vocabulario-bank",
+    bankTitle: "Vocabulario esencial EN → ES",
+    bankIcon: "Languages",
+    presetId: "example-vocabulario",
+    presetName: "Vocabulario · Repaso Anki",
+    prepSec: 0,
+    responseSec: 0,
+    questions: [
+      "House",
+      "Dog",
+      "Book",
+      "Friend",
+      "Water",
+      "City",
+      "Teacher",
+      "Happy",
+    ],
+    answers: [
+      "Casa",
+      "Perro",
+      "Libro",
+      "Amigo",
+      "Agua",
+      "Ciudad",
+      "Profesor",
+      "Feliz",
+    ],
+  },
 ];
 
 export function ensureExamples(): void {
@@ -153,6 +186,7 @@ export function ensureExamples(): void {
       user_id: EXAMPLE_USER,
       title: ex.bankTitle,
       is_public: true,
+      kind: ex.kind ?? "qa",
       icon: ex.bankIcon,
       created_at: now,
     });
@@ -162,6 +196,7 @@ export function ensureExamples(): void {
         bank_id: ex.bankId,
         text,
         order_index: i,
+        answer: ex.answers?.[i],
       });
     });
     db.presets.push({
@@ -172,6 +207,7 @@ export function ensureExamples(): void {
       questions_count: ex.questions.length,
       time_per_question_sec: ex.responseSec,
       is_random: true,
+      kind: ex.kind ?? "qa",
       category: ex.category,
       prep_sec: ex.prepSec,
       created_at: now,
@@ -195,6 +231,7 @@ export function ensureExamples(): void {
         count: ex.questions.length,
         isRandom: true,
         is_public: true,
+        kind: ex.kind ?? "qa",
         category: ex.category,
         created_at: now,
       });
@@ -217,11 +254,16 @@ export function getBanks(userId: string): QuestionBank[] {
     .sort((a, b) => a.created_at.localeCompare(b.created_at));
 }
 
+export function getBank(bankId: string): QuestionBank | undefined {
+  return read().banks.find((b) => b.id === bankId);
+}
+
 export function createBank(
   userId: string,
   title: string,
   isPublic: boolean,
   icon?: string,
+  kind: "qa" | "vocabulario" = "qa",
 ): QuestionBank {
   const db = read();
   const bank: QuestionBank = {
@@ -229,6 +271,7 @@ export function createBank(
     user_id: userId,
     title: title.trim() || "Banco sin título",
     is_public: isPublic,
+    kind,
     icon: icon,
     created_at: new Date().toISOString(),
   };
@@ -264,7 +307,11 @@ export function getQuestions(bankId: string): Question[] {
     .sort((a, b) => a.order_index - b.order_index);
 }
 
-export function addQuestion(bankId: string, text: string): Question {
+export function addQuestion(
+  bankId: string,
+  text: string,
+  answer?: string,
+): Question {
   const db = read();
   const text2 = text.trim();
   if (!text2) throw new Error("La pregunta no puede estar vacía");
@@ -274,6 +321,7 @@ export function addQuestion(bankId: string, text: string): Question {
     bank_id: bankId,
     text: text2,
     order_index: order,
+    answer: answer?.trim() || undefined,
   };
   db.questions.push(q);
   write(db);
@@ -497,6 +545,7 @@ export function seedIfEmpty(userId: string): void {
     user_id: userId,
     title: "Entrevista general",
     is_public: false,
+    kind: "qa",
     icon: "ListChecks",
     created_at: new Date().toISOString(),
   };

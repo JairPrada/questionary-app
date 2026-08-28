@@ -4,7 +4,8 @@ import { ThemeProvider } from "@/lib/theme";
 import { ensureExamples } from "@/lib/db";
 import { Navbar } from "@/components/Navbar";
 import { Landing } from "@/pages/Landing";
-import { Demo } from "@/pages/Demo";
+import { Live } from "@/pages/Live";
+import { Create } from "@/pages/Create";
 import { Dashboard } from "@/pages/Dashboard";
 import { Interview } from "@/pages/Interview";
 import { SessionRun } from "@/pages/SessionRun";
@@ -31,11 +32,12 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route element={<Layout />}>
-            <Route path="/demo" element={<Demo />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/dashboard" element={<Dashboard />} />
           </Route>
           <Route path="/interview/:id" element={<Interview />} />
           <Route path="/session/:id" element={<SessionRun />} />
+          <Route path="/live" element={<Live />} />
+          <Route path="/crear" element={<Create />} />
           <Route path="*" element={<Landing />} />
         </Routes>
       </BrowserRouter>

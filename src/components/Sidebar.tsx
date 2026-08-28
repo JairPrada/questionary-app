@@ -20,7 +20,7 @@ type Item = {
 
 const ITEMS: Item[] = [
   { label: "Dashboard", icon: LayoutDashboard, to: "/dashboard" },
-  { label: "Nueva simulación", icon: PlusCircle, to: "/demo" },
+  { label: "Practicar en vivo", icon: PlusCircle, to: "/live" },
   { label: "Bancos", icon: Library, scrollTo: "bancos" },
   { label: "Historial", icon: History, scrollTo: "historial" },
 ];

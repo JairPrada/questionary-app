@@ -74,7 +74,7 @@ export function AuthDialog({
               Iniciar sesión
             </Button>
             <Button
-              variant="outline"
+              variant="secondary"
               className="flex-1"
               onClick={() => submit("signup")}
             >

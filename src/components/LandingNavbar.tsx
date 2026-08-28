@@ -40,9 +40,9 @@ export function LandingNavbar({
             <NavbarButton
               variant="secondary"
               as="button"
-              onClick={() => navigate("/demo")}
+              onClick={() => navigate("/live")}
             >
-              Practicar
+              Practicar en vivo
             </NavbarButton>
             <NavbarButton
               variant="primary"
@@ -80,11 +80,11 @@ export function LandingNavbar({
               variant="secondary"
               onClick={() => {
                 setMobileOpen(false);
-                navigate("/demo");
+                navigate("/live");
               }}
               className="w-full"
             >
-              Practicar
+              Practicar en vivo
             </NavbarButton>
             <NavbarButton
               as="button"

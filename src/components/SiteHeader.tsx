@@ -35,9 +35,6 @@ export function SiteHeader({
           Questionary
         </Link>
         <nav className="hidden items-center gap-5 text-sm text-muted-foreground sm:flex">
-          <Link to="/demo" className="transition-colors hover:text-foreground">
-            Demo
-          </Link>
           <Link
             to="/dashboard"
             className="transition-colors hover:text-foreground"
@@ -55,7 +52,7 @@ export function SiteHeader({
             <SheetTrigger
               render={
                 <Button
-                  variant="outline"
+                  variant="secondary"
                   size="icon"
                   className="sm:hidden"
                   aria-label="Abrir menú"
@@ -69,15 +66,6 @@ export function SiteHeader({
                 <SheetTitle>Menú</SheetTitle>
               </SheetHeader>
               <div className="mt-6 flex flex-col gap-2">
-                <Button
-                  variant="ghost"
-                  onClick={() => {
-                    setMenuOpen(false);
-                    navigate("/demo");
-                  }}
-                >
-                  Demo
-                </Button>
                 <Button
                   variant="ghost"
                   onClick={() => {

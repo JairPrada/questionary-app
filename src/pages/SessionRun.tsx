@@ -94,7 +94,7 @@ export function SessionRun() {
                 <ArrowRight className="size-4" />
               </Button>
               <Button
-                variant="outline"
+                variant="secondary"
                 className="gap-2"
                 onClick={() => {
                   setSummary(null);

@@ -46,7 +46,7 @@ export function SessionSettings({
   const [open, setOpen] = useState(false);
   return (
     <>
-      <Button type="button" variant="outline" size="sm" className="gap-2" onClick={() => setOpen(true)}>
+      <Button type="button" variant="secondary" size="sm" className="gap-2" onClick={() => setOpen(true)}>
         <Settings2 className="size-4" />
         Personalizar
       </Button>

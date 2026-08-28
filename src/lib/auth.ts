@@ -2,6 +2,7 @@ import type { User } from "./types";
 import { read, write } from "./db";
 
 const KEY = "questionary-user";
+const GUEST_KEY = "questionary-guest";
 
 function uid(): string {
   if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
@@ -65,4 +66,20 @@ export function signOut(): void {
   } catch {
     /* noop */
   }
+}
+
+export function getOrCreateGuestId(): string {
+  try {
+    const raw = localStorage.getItem(GUEST_KEY);
+    if (raw) return raw;
+  } catch {
+    /* noop */
+  }
+  const id = "guest-" + uid();
+  try {
+    localStorage.setItem(GUEST_KEY, id);
+  } catch {
+    /* noop */
+  }
+  return id;
 }
